@@ -47,7 +47,7 @@ if filtered.empty:
     st.info("Select at least one Sub_Category to see the chart and metrics.")
 else:
     st.write("### (3) Sales for the selected items")
-    monthly_sales = filtered[["Sales"]].groupby(pd.Grouper(freq="M")).sum()
+    monthly_sales = filtered[["Sales"]].groupby(pd.Grouper(freq="ME")).sum()
     st.line_chart(monthly_sales, y="Sales")
 
     st.write("### (4) Metrics for the selected items")
