@@ -47,9 +47,15 @@ if filtered.empty:
     st.info("Select at least one Sub_Category to see the chart and metrics.")
 else:
     st.write("### (3) Sales for the selected items")
-    # Group the filtered data by month and sum the sales
-    monthly_sales = filtered[["Sales"]].groupby(pd.Grouper(freq="ME")).sum()
-    st.line_chart(monthly_sales, y="Sales")
+    
+    # One column per selected Sub_Category (monthly sales), plus a Total column
+    monthly_sales = (
+        filtered.groupby([pd.Grouper(freq="ME"), "Sub_Category"])["Sales"]
+        .sum()
+        .unstack("Sub_Category", fill_value=0)
+    )
+    monthly_sales["Total"] = monthly_sales.sum(axis=1)
+    st.line_chart(monthly_sales)
 
     st.write("### (4) Metrics for the selected items")
     total_sales = filtered["Sales"].sum()
