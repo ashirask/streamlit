@@ -21,8 +21,8 @@ st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sale
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
 df["Order_Date"] = pd.to_datetime(df["Order_Date"])
 df.set_index('Order_Date', inplace=True)
-# Here the Grouper is using our newly set index to group by Month ('M')
-sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq='M')).sum()
+# Here the Grouper is using our newly set index to group by Month ("ME")
+sales_by_month = df.filter(items=['Sales']).groupby(pd.Grouper(freq="ME")).sum()
 
 st.dataframe(sales_by_month)
 
@@ -47,6 +47,7 @@ if filtered.empty:
     st.info("Select at least one Sub_Category to see the chart and metrics.")
 else:
     st.write("### (3) Sales for the selected items")
+    # Group the filtered data by month and sum the sales
     monthly_sales = filtered[["Sales"]].groupby(pd.Grouper(freq="ME")).sum()
     st.line_chart(monthly_sales, y="Sales")
 
